@@ -13,7 +13,7 @@ namespace EducationBlog.Service
     public interface IBlogService
     {
         Task<bool> Add(BlogAddDto model);
-        Task<IList<BlogGetDto>> Get();
+        Task<IList<BlogGetDto>> Get(string body = null, string header = null);
     }
     public class BlogService:IBlogService
     {
@@ -44,19 +44,23 @@ namespace EducationBlog.Service
             {
                 return false;
             }
-
         }
 
-        public async Task<IList<BlogGetDto>> Get()
+        public async Task<IList<BlogGetDto>> Get(string body = null, string header = null)
         {
             var query = _context.Blog.AsQueryable();
+
+            if (!String.IsNullOrWhiteSpace(body))
+                query = query.Where(x => x.Body.Contains(body));
+            if (!String.IsNullOrWhiteSpace(header))
+                query = query.Where(x => x.Header.Contains(header));
 
             var result = await query
                 .Select(s => new BlogGetDto
                 {
                     Id = s.Id,
                     Header = s.Header,
-                    Body=s.Body
+                    Body = s.Body
                 })
                 .ToListAsync();
 

@@ -27,10 +27,10 @@ namespace EducationBlog.Controllers
 
             return Ok();
         }
-        [Route("Get"),ResponseType(typeof(IEnumerable<BlogGetDto>))]
-        public async Task<IHttpActionResult> Get()
+        [Route("Get"), ResponseType(typeof(IEnumerable<BlogGetDto>))]
+        public async Task<IHttpActionResult> Get(string body = null, string header = null)
         {
-            var result = await _blogService.Get();
+            var result = await _blogService.Get(body,header);
 
             return Ok(result);
         }
