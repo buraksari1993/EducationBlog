@@ -1,5 +1,7 @@
-﻿using System.Security.Claims;
+﻿using System.Data.Entity;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using EducationBlog.Models.Domain;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -18,16 +20,17 @@ namespace EducationBlog.Models
         }
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class EducationBlogDBContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+        public EducationBlogDBContext()
+            : base("EducationBlogDBContext", throwIfV1Schema: false)
         {
         }
-        
-        public static ApplicationDbContext Create()
+
+        public static EducationBlogDBContext Create()
         {
-            return new ApplicationDbContext();
+            return new EducationBlogDBContext();
         }
+        public DbSet<Blog> Blog { get; set; }
     }
 }
