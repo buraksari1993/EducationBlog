@@ -2,13 +2,18 @@
 using EducationBlog.Models;
 using EducationBlog.Models.Domain;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EducationBlog.Service
 {
     public interface IBlogService
     {
-        Task<bool> Add(BlogAddDto model);       
+        Task<bool> Add(BlogAddDto model);
+        Task<IList<BlogGetDto>> Get();
     }
     public class BlogService:IBlogService
     {
@@ -40,6 +45,22 @@ namespace EducationBlog.Service
                 return false;
             }
 
+        }
+
+        public async Task<IList<BlogGetDto>> Get()
+        {
+            var query = _context.Blog.AsQueryable();
+
+            var result = await query
+                .Select(s => new BlogGetDto
+                {
+                    Id = s.Id,
+                    Header = s.Header,
+                    Body=s.Body
+                })
+                .ToListAsync();
+
+            return result;
         }
     }
 }

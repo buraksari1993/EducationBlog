@@ -1,7 +1,9 @@
 ﻿using EducationBlog.Dtos;
 using EducationBlog.Service;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace EducationBlog.Controllers
 {
@@ -24,6 +26,13 @@ namespace EducationBlog.Controllers
                 return BadRequest();
 
             return Ok();
+        }
+        [Route("Get"),ResponseType(typeof(IEnumerable<BlogGetDto>))]
+        public async Task<IHttpActionResult> Get()
+        {
+            var result = await _blogService.Get();
+
+            return Ok(result);
         }
     }
 }
