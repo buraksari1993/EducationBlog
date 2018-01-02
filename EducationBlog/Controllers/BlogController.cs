@@ -1,5 +1,6 @@
 ﻿using EducationBlog.Dtos;
 using EducationBlog.Service;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -33,6 +34,26 @@ namespace EducationBlog.Controllers
             var result = await _blogService.Get(body,header);
 
             return Ok(result);
+        }
+        [Route("Update"),HttpPut]
+        public async Task<IHttpActionResult> Update(Guid id,BlogUpdateDto model)
+        {
+            bool result = await _blogService.Update(id, model);
+
+            if (!result)
+                return BadRequest();
+
+            return Ok();
+        }
+        [Route("Delete")]
+        public async Task<IHttpActionResult> Delete(Guid id)
+        {
+            bool result = await _blogService.Delete(id);
+
+            if (!result)
+                return BadRequest();
+
+            return Ok();
         }
     }
 }

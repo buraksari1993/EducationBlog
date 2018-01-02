@@ -16,4 +16,12 @@ namespace EducationBlog.Dtos
         public string Header { get; set; }
         public string Body { get; set; }
     }
+    public class BlogUpdateDto
+    {
+        //public Guid Id { get; set; }
+        [Required, MaxLength(100)]
+        public string Header { get; set; }
+        [Required]
+        public string Body { get; set; }
+    }
 }

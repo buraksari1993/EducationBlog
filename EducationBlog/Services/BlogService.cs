@@ -1,6 +1,7 @@
 ﻿using EducationBlog.Dtos;
 using EducationBlog.Models;
 using EducationBlog.Models.Domain;
+using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace EducationBlog.Service
     {
         Task<bool> Add(BlogAddDto model);
         Task<IList<BlogGetDto>> Get(string body = null, string header = null);
+        Task<bool> Update(Guid id,BlogUpdateDto model);
+        Task<bool> Delete(Guid id);
     }
     public class BlogService:IBlogService
     {
@@ -65,6 +68,42 @@ namespace EducationBlog.Service
                 .ToListAsync();
 
             return result;
+        }
+
+        public async Task<bool> Update(Guid id, BlogUpdateDto model)
+        {
+            try
+            {
+                var query = _context.Blog.FirstOrDefault(x => x.Id == id);
+
+                query.Body = model.Body;
+                query.Header = model.Header;
+
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> Delete(Guid id)
+        {
+            try
+            {
+                var query = _context.Blog.FirstOrDefault(x => x.Id == id);
+                _context.Blog.Remove(query);
+
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            } 
         }
     }
 }
